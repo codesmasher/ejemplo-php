@@ -1,0 +1,26 @@
+name: esotelo
+
+services:
+  web-php:
+    build:
+      context: ./container
+    container_name: apache-php
+    restart: always
+    volumes:
+      - ./volumes/html:/var/www/html:rw
+      - ./volumes/temp:/tmp:rw
+    ports:
+      - "80:80"
+    tty: true
+    stdin_open: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Permite resolver la IP de tu máquina local
+    environment:
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
+    networks:
+      - intranet
+
+networks:
+  intranet:
+    external: true
+    name: localnet
